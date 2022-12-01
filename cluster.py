@@ -103,7 +103,13 @@ def get_spawns():
     area.append(area[0])
     area = ",".join(area)
     cursor = connection.cursor()
-    query = f"select spawnpoint, latitude, longitude from trs_spawn where ST_CONTAINS(ST_GEOMFROMTEXT('POLYGON(({area}))'), point(latitude, longitude)) and eventid = 1 order by longitude, latitude"
+    if config["scanner"] == "mad":
+        query = f"select spawnpoint, latitude, longitude from trs_spawn where ST_CONTAINS(ST_GEOMFROMTEXT('POLYGON(({area}))'), point(latitude, longitude)) and eventid = 1 order by longitude, latitude"
+    elif config["scanner"] == "rdm":
+        query = f"select id as spawnpoint, lat as latitude, lon as longitude from spawnpoint where ST_CONTAINS(ST_GEOMFROMTEXT('POLYGON(({area}))'), point(lat, lon)) order by lon, lat"
+    else:
+        print(f"Fail: invalid scanner configured")
+        return
     cursor.execute(query)
 
     r = cursor.fetchall()

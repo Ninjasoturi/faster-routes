@@ -4,6 +4,7 @@
     "password": "password",
     "db_name": "mad",
     "port": 3306,
+    "scanner": "mad",
 
     "max_distance_between_spawns": 75,
     "view_distance": 67,
